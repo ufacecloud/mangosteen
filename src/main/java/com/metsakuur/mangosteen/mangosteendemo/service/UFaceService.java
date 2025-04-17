@@ -48,4 +48,12 @@ public class UFaceService {
         return uFaceMangosteen.MKEncryptedDataOTP(data.getUuid(), data.getRand(), source, source.length);
     }
 
+    public byte [] encryptData(byte [] data) {
+        return uFaceMangosteen.encryptData(data) ;
+    }
+
+    public byte [] decryptData(byte [] data) {
+        return uFaceMangosteen.decryptData(data);
+    }
+
 }

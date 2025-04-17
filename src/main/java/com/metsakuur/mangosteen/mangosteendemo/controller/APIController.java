@@ -25,6 +25,38 @@ public class APIController
     @Autowired
     private UFaceService uFaceService;
 
+    @PostMapping("/api/encode")
+    public @ResponseBody ResponseModel<String> encryptData(@RequestParam String data) {
+        ResponseModel<String> response = new ResponseModel<String>();
+        response.setMessage(Constants.OK+ "");
+        try {
+            byte [] encrypted = uFaceService.encryptData(data.getBytes());
+            String encryptedString = Base64.getEncoder().encodeToString(encrypted);
+            response.setData(encryptedString);
+        } catch (Exception e) {
+            response.setCode("" + Constants.ERROR);
+            response.setMessage(e.getMessage());
+            response.setData("");
+        }
+        return response;
+    }
+
+    @PostMapping("/api/decode")
+    public @ResponseBody ResponseModel<String> decryptData(@RequestParam String data) {
+        ResponseModel<String> response = new ResponseModel<String>();
+        response.setMessage(Constants.OK+ "");
+        try {
+            byte [] decoded = Base64.getDecoder().decode(data);
+            byte [] decrypted = uFaceService.decryptData(decoded);
+            response.setData(new String(decrypted));
+        } catch (Exception e) {
+            response.setCode("" + Constants.ERROR);
+            response.setMessage(e.getMessage());
+            response.setData("");
+        }
+        return response;
+    }
+
 
     @PostMapping("/api/totp/decrypt")
     public @ResponseBody ResponseModel<String> checkTOTP(@RequestBody TotpData data) {
